@@ -1,0 +1,44 @@
+# =========================================
+# DEPENDENCIES (Modul yang besar)
+# =========================================
+node_modules/
+/.pnp
+.pnp.js
+
+# =========================================
+# ENVIRONMENT VARIABLES (Rahasia / Kredensial DB)
+# =========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =========================================
+# BUILD OUTPUT (Hasil build React/Node)
+# =========================================
+/build
+/dist
+/out
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================================
+# TESTING & COVERAGE
+# =========================================
+coverage/
+.nyc_output/
+
+# =========================================
+# OS & EDITOR SETTINGS (File sampah dari OS/Editor)
+# =========================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
