@@ -9,10 +9,12 @@ exports.getProducts = (req, res) => {
 
 exports.createProduct = (req, res) => {
   const { name, price, stock } = req.body;
+  const image = req.file ? req.file.filename : null;
+
   db.query(
-    "INSERT INTO products (name, price, stock) VALUES (?, ?, ?)",
-    [name, price, stock],
-    (err, result) => {
+    "INSERT INTO products (name, price, stock, image) VALUES (?, ?, ?, ?)",
+    [name, price, stock, image],
+    (err) => {
       if (err) return res.json(err);
       res.json("Product added");
     }

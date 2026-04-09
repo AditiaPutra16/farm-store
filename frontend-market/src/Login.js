@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function Login() {
+function Login({ setToken }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +14,7 @@ function Login() {
 
       // simpan token
       localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
 
       alert("Login berhasil!");
     } catch (err) {
