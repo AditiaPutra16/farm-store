@@ -8,11 +8,29 @@ function AdminDashboard({ setToken }) {
   const [stock, setStock] = useState("");
   const [editId, setEditId] = useState(null);
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   // ambil data produk
   const getProducts = async () => {
     const res = await API.get("/products");
     setProducts(res.data);
+  };
+
+  // ambil produk by id
+  const getProduct = async (id) => {
+    try {
+      const res = await API.get(`/products/${id}`);
+      const product = res.data;
+      console.log("Product data:", product);
+      setName(product.name);
+      setPrice(product.price);
+      setStock(product.stock);
+      setImagePreview(`http://localhost:3000/uploads/${product.image}`);
+      setEditId(id);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      alert("Gagal mengambil data produk");
+    }
   };
 
   useEffect(() => {
@@ -39,6 +57,7 @@ function AdminDashboard({ setToken }) {
     setPrice("");
     setStock("");
     setImage(null);
+    setImagePreview(null);
     setEditId(null);
 
     getProducts();
@@ -66,10 +85,30 @@ function AdminDashboard({ setToken }) {
       <hr />
 
       <h3>Tambah Produk</h3>
-      <input placeholder="Nama" onChange={(e) => setName(e.target.value)} />
-      <input placeholder="Harga" onChange={(e) => setPrice(e.target.value)} />
-      <input placeholder="Stock" onChange={(e) => setStock(e.target.value)} />
-      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+      <input
+        placeholder="Nama"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        placeholder="Harga"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+      <input
+        placeholder="Stock"
+        value={stock}
+        onChange={(e) => setStock(e.target.value)}
+      />
+      {imagePreview && <img src={imagePreview} alt="Preview" width="150" />}
+      <input
+        type="file"
+        onChange={(e) => {
+          setImage(e.target.files[0]);
+          if (e.target.files[0])
+            setImagePreview(URL.createObjectURL(e.target.files[0]));
+        }}
+      />
       <button onClick={handleSave}>{editId ? "Update" : "Tambah"}</button>
 
       <hr />
@@ -88,16 +127,7 @@ function AdminDashboard({ setToken }) {
 
           <button onClick={() => handleDelete(p.id)}>Hapus</button>
 
-          <button
-            onClick={() => {
-              setEditId(p.id);
-              setName(p.name);
-              setPrice(p.price);
-              setStock(p.stock);
-            }}
-          >
-            Edit
-          </button>
+          <button onClick={() => getProduct(p.id)}>Edit</button>
 
           <hr />
         </div>
